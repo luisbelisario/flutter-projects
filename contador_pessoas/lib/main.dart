@@ -16,18 +16,30 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
-  void homeTeamGoal() {
-    // ignore: avoid_print
-    print('increment home team');
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int homeTeamGoals = 0;
+  int awayTeamGoals = 0;
+
+  void makeHomeTeamGoal() {
+    setState(() {
+      homeTeamGoals++;
+    });
   }
 
-  void awayTeamGoal() {
-    // ignore: avoid_print
-    print('increment away team');
+  void makeAwayTeamGoal() {
+    setState(() {
+      awayTeamGoals++;
+    });
   }
+
+  bool get virouPasseio => homeTeamGoals >= 7 || awayTeamGoals >=7;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +63,19 @@ class Home extends StatelessWidget {
               color: Colors.black,
             ),
           ),
-          const SizedBox(height: 70),
-          const Text(
-            '0 x 0',
+          if (virouPasseio) 
+            const Text(
+            'Virou passeio!',
             style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w900,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 70),
+          Text(
+            '$homeTeamGoals x $awayTeamGoals',
+            style: const TextStyle(
               fontSize: 70,
               color: Colors.black,
               fontWeight: FontWeight.w900,
@@ -65,7 +86,7 @@ class Home extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                onPressed: homeTeamGoal,
+                onPressed: makeHomeTeamGoal,
                 style: TextButton.styleFrom(
                     backgroundColor: Colors.green,
                     primary: Colors.white,
@@ -84,7 +105,7 @@ class Home extends StatelessWidget {
               ),
               const SizedBox(width: 20),
               TextButton(
-                onPressed: awayTeamGoal,
+                onPressed: makeAwayTeamGoal,
                 style: TextButton.styleFrom(
                     backgroundColor: Colors.green,
                     primary: Colors.white,
@@ -105,6 +126,7 @@ class Home extends StatelessWidget {
           )
         ],
       ),
-    ));
+    )
+    );
   }
 }
