@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:calculadora_imc/calculatePage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +20,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
-  String _infoText = "Informe seus dados";
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -27,20 +27,6 @@ class _HomeState extends State<Home> {
     setState(() {
       weightController.text = "";
       heightController.text = "";
-      _infoText = "Informe seus dados";
-    });
-  }
-
-  void calculateIMC() {
-    setState(() {
-      double weight = double.parse(weightController.text);
-      double height = double.parse(heightController.text) / 100;
-
-      double imc = weight / (height * height);
-
-      if (imc < 18.6) {
-        _infoText = "Abaixo do peso (${imc.toStringAsPrecision(2)})";
-      }
     });
   }
 
@@ -48,8 +34,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Calculadora de IMC"),
-        centerTitle: true,
         backgroundColor: Colors.green,
         actions: [
           IconButton(
@@ -120,9 +104,15 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 15.0),
                 child: RaisedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      calculateIMC();
-                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Calculate(
+                                weight: weightController.text,
+                                height: heightController.text,
+                              )
+                          ),
+                    );
                   },
                   child: const Text(
                     "Calcular",
@@ -132,13 +122,6 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   color: Colors.green,
-                ),
-              ),
-              Text(
-                _infoText,
-                style: const TextStyle(
-                  color: Colors.green,
-                  fontSize: 20,
                 ),
               )
             ],
