@@ -1,6 +1,8 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 
+import 'completeAdress.dart';
+
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -74,7 +76,14 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.only(top: 60.0),
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CompleteAddress()
+                          ),
+                    );
+                    },
                     child: const Text(
                       "Pesquisar",
                       style: TextStyle(
